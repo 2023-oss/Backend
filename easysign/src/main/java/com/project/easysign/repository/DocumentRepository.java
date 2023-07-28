@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
-    @Query("SELECT DISTINCT d FROM Document d " + // DISTINCT 키워드를 사용해 주복된 결과 제거
-            "LEFT JOIN FETCH d.categories c " +
-            "WHERE d.id = :documentId")
-    Document findDocumentWithCategories(@Param("documentId") Long documentId);
-    @Query("SELECT DISTINCT d FROM Document d " + // DISTINCT 키워드를 사용해 중복된 결과 제거
-            "LEFT JOIN FETCH d.categories c " +
-            "LEFT JOIN FETCH c.blocks b " +
-            "WHERE d.id = :documentId")
-    Document findDocumentWithCategoriesAndBlocks(@Param("documentId") Long documentId);
+    @Query("select distinct d from Document d " +
+            "left join fetch d.blocks b " +
+            "where d.id = :documentId ")
+    Document findDocumentWithBlocks(@Param("documentId") Long documentId);
+
+    @Query("select distinct d from Document d " +
+            "left join fetch d.answers b " +
+            "where d.id = :documentId ")
+    Document findDocumentWithAnswers(Long documentId);
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -12,46 +11,21 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Document {
+public class Document extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+    private String title;
+    private String writer; // 동의서를 작성한 사용자
 
     @JsonIgnore // 양방향 매핑 시 JsonIgnore를 추가해 무한루프 해결
     @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Category> categories = new ArrayList<>();
+    private List<Block> blocks;
+    @JsonIgnore // 양방향 매핑 시 JsonIgnore를 추가해 무한루프 해결
+    @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Answer> answers;
 
-    private String title;
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class Request {
-        private Long userId;
-        private String title;
-        private List<Category.Request> categories;
-        /* Dto -> Entity */
-//        public Reply toEntity(User user, Board board) {
-//            Reply reply = Reply.builder()
-//                    .user(user)
-//                    .board(board)
-//                    .commentContent(comment)
-//                    .build();
-//            return reply;
-//        }
-    }
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class Response {
-        private String company;
-        private String title;
-        private List<Category.Response> categoryList;
-
-    }
 }
