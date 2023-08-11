@@ -1,8 +1,7 @@
 package com.project.easysign.controller;
 
-import com.project.easysign.domain.Document;
-import com.project.easysign.domain.dto.DocumentDto;
-import com.project.easysign.domain.dto.TemplateDto;
+import com.project.easysign.dto.DocumentDto;
+import com.project.easysign.dto.TemplateDto;
 import com.project.easysign.service.DocumentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

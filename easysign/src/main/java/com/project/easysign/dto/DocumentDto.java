@@ -1,4 +1,4 @@
-package com.project.easysign.domain.dto;
+package com.project.easysign.dto;
 
 import com.project.easysign.domain.Document;
 import com.project.easysign.domain.User;
@@ -7,27 +7,30 @@ import lombok.Data;
 
 import java.util.List;
 
-
-public class TemplateDto {
+public class DocumentDto {
     @Data
     @Builder
     public static class Request{
-        private Long userId;
         private String title;
-        private List<TemplateCategoryDto> categoryDtos;
+        private Long userId;
+        private String writer;
+        private List<DocumentCategoryDto> categoryDtos;
         public Document toEntity(User user){
             return Document.builder()
                     .user(user)
-                    .title(this.title)
+                    .title(title)
+                    .writer(writer)
                     .build();
         }
     }
+
     @Data
     @Builder
     public static class Response{
-        private Long templateId;
-        private Long userId;
+        private Long documentId;
         private String title;
-        private List<TemplateCategoryDto> categoryDtos;
+        private Long userId;
+        private String writer;
+        private List<DocumentCategoryDto> categoryDtos;
     }
 }

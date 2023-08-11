@@ -1,6 +1,6 @@
 package com.project.easysign.domain;
 
-import com.project.easysign.domain.dto.AnswerDto;
+import com.project.easysign.dto.AnswerDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.project.easysign.domain;
 
-import com.project.easysign.domain.dto.BlockDto;
+import com.project.easysign.dto.BlockDto;
 import lombok.*;
 
 import javax.persistence.*;

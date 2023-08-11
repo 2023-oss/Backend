@@ -1,4 +1,4 @@
-package com.project.easysign.domain.dto;
+package com.project.easysign.dto;
 
 import com.project.easysign.domain.Answer;
 import com.project.easysign.domain.Document;
