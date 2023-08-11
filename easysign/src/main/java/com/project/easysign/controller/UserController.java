@@ -1,6 +1,7 @@
 package com.project.easysign.controller;
 
 import com.project.easysign.dto.UserDTO;
+import com.project.easysign.s3.S3Service;
 import com.project.easysign.service.MailService;
 import com.project.easysign.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +19,13 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
     private final MailService mailService;
+    private final S3Service s3Service;
     @PostMapping("/join")
     public ResponseEntity register(@RequestPart("img")MultipartFile multipartFile,
                                    @RequestPart("user") @Valid UserDTO.Request request){
         String imgUrl = null;
         if(multipartFile != null){
-
+            imgUrl = s3Service.uploadImage(multipartFile);
         }
         String status = userService.register(request, imgUrl);
         return ResponseEntity.status(HttpStatus.OK).body(status);
