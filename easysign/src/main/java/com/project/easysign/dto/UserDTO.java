@@ -30,6 +30,7 @@ public class UserDTO {
             return User.builder()
                     .userId(userId)
                     .pw(pass)
+                    .userName(userName)
                     .email(email)
                     .company(company)
                     .companyType(companyType)
