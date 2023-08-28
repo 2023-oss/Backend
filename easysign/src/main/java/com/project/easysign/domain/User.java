@@ -29,7 +29,7 @@ public class User {
 
     @JsonIgnore // 양방향 매핑 시 JsonIgnore를 추가해 무한루프 해결
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Document> documents;
+    private List<Template> templates;
 
     public String getRoleKey(){
         return this.role.getKey();
