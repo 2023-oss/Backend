@@ -1,9 +1,11 @@
 package com.project.easysign.service;
 
 import com.project.easysign.domain.Role;
+import com.project.easysign.domain.Template;
 import com.project.easysign.domain.User;
 import com.project.easysign.dto.UserDTO;
 import com.project.easysign.exception.AlreadyExistsException;
+import com.project.easysign.repository.TemplateRepository;
 import com.project.easysign.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,11 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
+
 @Transactional
 @RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final TemplateRepository templateRepository;
     private final PasswordEncoder passwordEncoder;
     public String register(UserDTO.Request request, String imgUrl) {
         Optional<User> optionalUser = userRepository.findByUserId(request.getUserId());
@@ -23,7 +28,12 @@ public class UserService {
             throw new AlreadyExistsException("이미 존재하는 아이디입니다.");
         }
         String pass = passwordEncoder.encode(request.getPw());
-        userRepository.save(request.toEntity(imgUrl, Role.USER, pass));
+        User user = userRepository.save(request.toEntity(imgUrl, Role.USER, pass));
+        templateRepository.save(Template.builder()
+                .templateId(UUID.randomUUID().toString())
+                .user(user)
+                .build());
+
         return "SUCCESS";
     }
     @Transactional(readOnly = true)

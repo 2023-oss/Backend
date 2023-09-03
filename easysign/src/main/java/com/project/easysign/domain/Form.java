@@ -22,12 +22,12 @@ public class Form extends BaseTimeEntity{
     @JoinColumn(name = "template_id")
     public Template template;
 
-    public String name;
-    public String phone;
-    @Column(columnDefinition = "JSON")
-    public String jsonData;
+    public String vpId;
 
-    public String sign;
+    @Column(columnDefinition = "JSON")
+    public String vp;
+    @Column(columnDefinition = "JSON")
+    public String form;
 
 
 }

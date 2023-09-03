@@ -17,9 +17,15 @@ public class Template {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
+    public String templateId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User user;
     @Column(columnDefinition = "JSON")
     public String jsonData;
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
 }

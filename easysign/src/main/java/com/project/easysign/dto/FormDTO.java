@@ -8,22 +8,23 @@ import lombok.Data;
 public class FormDTO {
     @Data
     public static class Request{
-        private String name;
-        private String phone;
+        private String vp;
+        private String form;
     }
     @Data
     public static class Response{
         private Long id;
-        private String name;
-        private String phone;
+        private String vpId;
+        private String form;
         private String createdDate;
 
         public Response(Form form) {
             this.id = form.getId();
-            this.name = form.getName();
-            this.phone = form.getPhone();
+            this.vpId = form.getVpId();
+            this.form = form.getForm();
             this.createdDate = form.getCreatedDate().toString();
         }
     }
+
 
 }

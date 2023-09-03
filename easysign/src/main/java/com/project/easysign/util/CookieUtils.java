@@ -23,10 +23,11 @@ public class CookieUtils {
     public static void addCookie(HttpServletResponse response, String name, String value, boolean httpOnly, boolean secure, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
-        cookie.setHttpOnly(httpOnly);
+//        cookie.setHttpOnly(httpOnly);
         cookie.setSecure(secure);
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
+        response.setHeader("Set-Cookie", String.format("%s=%s; Max-Age=%d; Path=/;", name, value, maxAge));
         // response.setHeader("Set-Cookie", String.format("%s=%s; Max-Age=%d; Domain=domarketdodo.shop; Path=/;", name, value, maxAge));
     }
 

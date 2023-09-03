@@ -43,6 +43,22 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	// mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.1'
+
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-rsa
+	implementation group: 'org.springframework.security', name: 'spring-security-rsa', version: '1.0.11.RELEASE'
+
+	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+	// https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk16
+//	implementation group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
+
+	// https://mvnrepository.com/artifact/org.web3j/crypto
+	implementation group: 'org.web3j', name: 'crypto', version: '5.0.0'
+
+
+
+
 }
 
 tasks.named('test') {
