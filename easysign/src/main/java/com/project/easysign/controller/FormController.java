@@ -24,6 +24,23 @@ public class FormController {
     private final FormService formService;
     private final S3Service s3Service;
 
+    @PostMapping("/register/{templateId}")
+    public ResponseEntity registerForm(@PathVariable("templateId") String templateId, @RequestBody String jsonData) throws DestroyFailedException, ParseException {
+        return ResponseEntity.status(HttpStatus.OK).body(formService.registerForm(templateId, jsonData));
+    }
+
+    @GetMapping("/viewAll/{templateId}")
+    public ResponseEntity viewAll(@PathVariable("templateId") Long templateId,
+                                  @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 5)Pageable pageable){
+        PageResponse responses = formService.getList(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(responses);
+    }
+
+    @GetMapping("/select/{vp_id}")
+    public ResponseEntity select(@PathVariable("vp_id") String vp_id){
+        return ResponseEntity.status(HttpStatus.OK).body(formService.select(vp_id));
+    }
+
 //    @PostMapping("/make/{templateId}")
 //    public ResponseEntity makeForm(@PathVariable("templateId")Long templateId,
 //                                   @RequestPart("sign") MultipartFile multipartFile,
@@ -43,16 +60,6 @@ public class FormController {
 //        String form = request.getForm();
 //        return ResponseEntity.status(HttpStatus.OK).body(formService.registerForm(templateId, vp, form));
 //    }
-    @PostMapping("/register/{templateId}")
-    public ResponseEntity registerForm(@PathVariable("templateId") Long templateId, @RequestBody String jsonData) throws DestroyFailedException, ParseException {
-        return ResponseEntity.status(HttpStatus.OK).body(formService.registerForm(templateId, jsonData));
-    }
 
-    @GetMapping("/viewAll/{templateId}")
-    public ResponseEntity viewAll(@PathVariable("templateId") Long templateId,
-                                  @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 5)Pageable pageable){
-        PageResponse responses = formService.getList(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
-    }
 
 }

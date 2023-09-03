@@ -1,53 +1,62 @@
 package com.project.easysign.util;
 
+import com.project.easysign.exception.DecryptFailException;
+import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.x509.RSAPublicKeyStructure;
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
-import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve;
 import org.springframework.stereotype.Service;
-
-import javax.crypto.Cipher;
-import javax.security.auth.DestroyFailedException;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Security;
-import java.security.spec.ECParameterSpec;
-import java.security.spec.ECPublicKeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.*;
+import java.security.spec.*;
 import java.util.Base64;
 
+@Slf4j
 @Service
 public class RsaUtil {
-    public static String decrypt(String encryptedText, String stringPublicKey) throws DestroyFailedException {
-        String decryptedText = null;
-        Security.addProvider(new BouncyCastleProvider());
+    private static final String SPEC = "RSA";
+    private static final String ALGO = "SHA256withRSA";
+
+    public static boolean decrypt(String encryptedText, String decrypted, String stringPublicKey)  {
+        boolean result = false;
 
         try {
-            // 평문으로 전달받은 공개키를 사용하기 위해 공개키 객체 생성
-//            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            byte[] bytePublicKey = Base64.getDecoder().decode(stringPublicKey.getBytes());
-//
-//            PKCS8EncodedKeySpec publicKeySpec = new PKCS8EncodedKeySpec(bytePublicKey);
-//            PrivateKey privateKey = keyFactory.generatePrivate(publicKeySpec);
-            KeyFactory keyFactory = KeyFactory.getInstance("ECDSA", "BC");
-            PublicKey publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(bytePublicKey));
+            // PEM에서 DER 형식으로 변환
+            String pemContent = stringPublicKey.replace("-----BEGIN RSA PUBLIC KEY-----", "").replace("-----END RSA PUBLIC KEY-----", "").trim();
+            byte[] der = Base64.getDecoder().decode(pemContent);
 
-            // 만들어진 공개키 객체로 복호화 설정
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE, publicKey);
+            // DER에서 RSAPublicKeyStructure를 얻음
+            ASN1Sequence seq = ASN1Sequence.getInstance(der);
+            RSAPublicKeyStructure rsaStruct = new RSAPublicKeyStructure(seq);
 
-            // 암호문을 평문화하는 과정
-            byte[] encryptedBytes =  Base64.getDecoder().decode(encryptedText.getBytes());
-            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-            decryptedText = new String(decryptedBytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new DestroyFailedException();
+            BigInteger modulus = rsaStruct.getModulus();
+            BigInteger publicExponent = rsaStruct.getPublicExponent();
+
+
+
+            // RSAPublicKeySpec를 사용하여 PublicKey 객체를 생성
+            RSAPublicKeySpec spec = new RSAPublicKeySpec(modulus, publicExponent);
+            KeyFactory factory = KeyFactory.getInstance("RSA");
+            log.info("publicKey");
+            PublicKey publicKey = factory.generatePublic(spec);
+
+            Signature ecdsaVerify = Signature.getInstance(ALGO);
+
+            log.info("init verify");
+            ecdsaVerify.initVerify(publicKey);
+
+            log.info("update verify");
+            ecdsaVerify.update(decrypted.getBytes("UTF-8"));
+
+            log.info("verify");
+            result = ecdsaVerify.verify(Base64.getDecoder().decode(encryptedText));
+        } catch (SignatureException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException | UnsupportedEncodingException e ) {
+            throw new DecryptFailException();
         }
 
-        return decryptedText;
+        return result;
     }
-
 }

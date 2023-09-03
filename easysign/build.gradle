@@ -51,7 +51,11 @@ dependencies {
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
 	// https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk16
-	implementation group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
+//	implementation group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
+
+	// https://mvnrepository.com/artifact/org.web3j/crypto
+	implementation group: 'org.web3j', name: 'crypto', version: '5.0.0'
+
 
 
 
