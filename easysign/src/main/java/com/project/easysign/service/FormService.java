@@ -49,8 +49,22 @@ public class FormService {
 //        return "SUCCESS";
 //    }
 
-    public PageResponse getList(Pageable pageable) {
-        Page<Form> formPage = formRepository.findAll(pageable);
+    public PageResponse getList(Pageable pageable, Long templateId) {
+        Page<Form> formPage = formRepository.findAllByTemplateId(pageable, templateId);
+        List<FormDTO.Response> formList = formPage.map(FormDTO.Response::new)
+                .stream().collect(Collectors.toList());
+
+        return PageResponse.builder()
+                .forms(formList)	// todoDtoPage.getContent()
+                .pageNo(pageable.getPageNumber()+1)
+                .pageSize(pageable.getPageSize())
+                .totalElements(formPage.getTotalElements())
+                .totalPages(formPage.getTotalPages())
+                .last(formPage.isLast())
+                .build();
+    }
+    public PageResponse getList(Pageable pageable,Long templateId, String search) {
+        Page<Form> formPage = formRepository.findAllByTemplateIdAndVpId(pageable,templateId, search);
         List<FormDTO.Response> formList = formPage.map(FormDTO.Response::new)
                 .stream().collect(Collectors.toList());
 
@@ -107,7 +121,7 @@ public class FormService {
         String decrypted = "";
         for(int i=0; i<vcs.size();i++){
             JSONObject vc = (JSONObject) vcs.get(i);
-            decrypted = vc.toString();
+            decrypted = vc.toString(); // json string 으로 변경
             JSONObject credentialSubject = (JSONObject)vc.get("credentialSubject");
             vp_id = credentialSubject.get("id").toString(); // == did
         }
@@ -121,11 +135,29 @@ public class FormService {
             throw new NonExistentException("제출된 vp에 해당하는 publicKey가 존재하지 않습니다.");
         }
 
+//        String publicKey = "" +
+//                "MIIBCgKCAQEAuA0INQ7kBzG7ohqe1t2cfnmDx427tFbQHmKTWqzvC2xhxp4HtjLZ" +
+//                "XUhFjVO8B1prAqTYM0yfZbntCZmyndT+68YJFViWPfbLQtso/7hF37arnRl7ASZ0" +
+//                "PtR5fHtPEFCV8hYbi4hMOivbmxdADU2GNl8Zibayx0sAip4cJnAEWvRpk13BjI7k" +
+//                "wSiVyO5DcSfHaN7Nk1rrlmoV0NsjxgumjWdHHrM4IDdop/mv2IJQaGDHLYsfjfpE" +
+//                "C5hfLZUp6E3xJxdu4Pp+CKwzix5995YLuHJj6e/oh5+0NsRRSck3bPOYnA2V6kCf" +
+//                "3B4PXre+6AwPpv6CIH6JfSH75qNXdI44AQIDAQAB" +
+//                "";
+
         // 1-2. publicKey로 vp 복호화
         JSONObject proof = (JSONObject) vp.get("proof");
         String jws = proof.get("jws").toString();
-//        String jws = "dgQKTst4D+e5iwtMT0hoArydZNaSArmNXQy1iaw+uWX52WMUwjiSYU+H3kW1cu3NDYL6PWO8B5AH7aMts/UxqZUSNSr1SDpfTCSFUUmmlqy1c3LkeiNUNbhFFKIRHBROmdL2r3r/GaUOa6A63wvsfFGUKFzj3A7DHVxb/i9LUG7oywSdDPk9UgkvpBLBl0Tm9sJuJDzPr+x7+sW5QMMHZC2Ii6ujeMyFi97EAZccQsiKmob+S6dNJp/KoFiZLGig5QW5V0ow8qCRRUyBHr7ohm+ec1e+J2m3FAPkJLPubbno7To4LgSyZsXZbtUuO9T9JNx8BlyBo1vmE6blve0WhA==";
-//        String dec = "{credentialSubject: {id: did:example:4d125fc7-eefc-4d62-ba73-aeb7fa18af19, alumniOf: {phone: 01011111111, name: 박박박, id: did:example:4d125fc7-eefc-4d62-ba73-aeb7fa18af19}}}";
+        log.info("jws => {}", jws);
+
+        decrypted = decrypted.replace("\n", "");
+        decrypted = decrypted.replace(" ","");
+//        decrypted = decrypted.replace("\"", "");
+        decrypted = decrypted.replace("\\", "");
+        log.info("vc => {}", decrypted);
+
+//        String jws = "g/RGyO3nzb9t7ElfbEm6Y34y/ozKDrnI4AiymzznR0cadOdJ+aE67LYPOfDXa+z7xQGLjDyv2FaPTHgWLdH3YRtAR9Gx0JSKsodZb7D5fg/90QlCHnqr8yrIy6A+1bnKgf4sJKsFGfItbLc0Ek8iLI05PrCl4+jncJ/o8hinrZDoUF11S/9aK9qG08y8rz1AI+YgKJHliY5bsWNSacIrj1De1Ozoc2eIrZt5Tplmys9+q6I8BQIbzGmtyqJe1LOdMOYWFF1NPGzOZf0LMozZJDYeZ+flrOOI25JVzh7WjwiBK8KYWc0CbUzOpv9QDPTWX43PqxttV8eFob/NJZ3yrg==";
+//        String dec = "a";
+//        String dec = "{credentialSubject: {id: did:example:74762851-63db-426c-a295-df95353b693e, alumniOf: {phone: 01011111111, name: 박박박, id: did:example:74762851-63db-426c-a295-df95353b693e}}}";
         boolean result = RsaUtil.decrypt(jws, decrypted, publicKey);
 
         if(!result){

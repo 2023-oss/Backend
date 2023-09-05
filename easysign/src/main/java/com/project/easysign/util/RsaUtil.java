@@ -23,9 +23,10 @@ public class RsaUtil {
         boolean result = false;
 
         try {
+
             // PEM에서 DER 형식으로 변환
-            String pemContent = stringPublicKey.replace("-----BEGIN RSA PUBLIC KEY-----", "").replace("-----END RSA PUBLIC KEY-----", "").trim();
-            byte[] der = Base64.getDecoder().decode(pemContent);
+//            String pemContent = stringPublicKey.replace("-----BEGIN RSA PUBLIC KEY-----", "").replace("-----END RSA PUBLIC KEY-----", "").trim();
+            byte[] der = Base64.getDecoder().decode(stringPublicKey);
 
             // DER에서 RSAPublicKeyStructure를 얻음
             ASN1Sequence seq = ASN1Sequence.getInstance(der);
@@ -33,8 +34,6 @@ public class RsaUtil {
 
             BigInteger modulus = rsaStruct.getModulus();
             BigInteger publicExponent = rsaStruct.getPublicExponent();
-
-
 
             // RSAPublicKeySpec를 사용하여 PublicKey 객체를 생성
             RSAPublicKeySpec spec = new RSAPublicKeySpec(modulus, publicExponent);
@@ -52,8 +51,7 @@ public class RsaUtil {
 
             log.info("verify");
             result = ecdsaVerify.verify(Base64.getDecoder().decode(encryptedText));
-        } catch (SignatureException e) {
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException | UnsupportedEncodingException e ) {
+        } catch (SignatureException | NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException | UnsupportedEncodingException e ) {
             throw new DecryptFailException();
         }
 

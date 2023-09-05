@@ -2,12 +2,17 @@ package com.project.easysign.service;
 
 import com.project.easysign.domain.Template;
 import com.project.easysign.domain.User;
+import com.project.easysign.exception.JsonException;
 import com.project.easysign.exception.NonExistentException;
 import com.project.easysign.exception.NonExistentUserException;
 import com.project.easysign.repository.TemplateRepository;
 import com.project.easysign.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 @Slf4j
@@ -37,9 +42,28 @@ public class TemplateService {
         return "SUCCESS";
     }
 
-    public String viewTemplate(Long templateId) {
-        Template template = templateRepository.findById(templateId)
+    public String viewTemplate(String templateId) {
+        Template template = templateRepository.findByTemplateId(templateId)
                 .orElseThrow(() -> new NonExistentException("존재하지 않는 동의서 양식 입니다."));
-        return template.jsonData;
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = (JSONObject) parser.parse(template.jsonData);
+        } catch (ParseException e) {
+            throw new JsonException("json 데이터 파싱에 실패했습니다.");
+        }
+        String defaultBlock = jsonObject.get("defaultBlock").toString();
+        String[] defaults = defaultBlock.split("<br/>");
+        JSONArray jsonArray = new JSONArray();
+        for(String item : defaults){
+            jsonArray.add(item);
+        }
+
+        jsonObject.remove("defaultBlock");
+
+        jsonObject.put("defaultBlock", jsonArray);
+        log.info("defaults=>{}", jsonObject.get("defaultBlock"));
+
+        return jsonObject.toJSONString();
     }
 }
