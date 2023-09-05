@@ -1,6 +1,6 @@
 # Backend
 
-###Stack
+### Stack
 |                             Icon                              |   Stack   | Description                                      |
 | :-----------------------------------------------------------: | :-------: | ------------------------------------------------ |
 |  <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">    |  SPRINGBOOT   | API 서버 2대 제작                                |
