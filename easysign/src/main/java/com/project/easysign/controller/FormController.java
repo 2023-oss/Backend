@@ -31,9 +31,13 @@ public class FormController {
 
     @GetMapping("/viewAll/{templateId}")
     public ResponseEntity viewAll(@PathVariable("templateId") Long templateId,
-                                  @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 5)Pageable pageable){
-        PageResponse responses = formService.getList(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
+                                  @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 5)Pageable pageable,
+                                  @RequestParam(value="search", required = false) String search){
+        if(search.equals("")){
+            return ResponseEntity.status(HttpStatus.OK).body(formService.getList(pageable, templateId));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(formService.getList(pageable,templateId, search));
+
     }
 
     @GetMapping("/select/{vp_id}")
