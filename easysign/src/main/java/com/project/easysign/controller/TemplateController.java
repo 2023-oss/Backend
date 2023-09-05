@@ -32,12 +32,15 @@ public class TemplateController {
         String status = templateService.updateTemplate(templateId, loginUser.getId(), jsonData);
         return ResponseEntity.status(HttpStatus.OK).body(status);
     }
-    @GetMapping("/view/{templateId}")
-    public ResponseEntity viewTemplate(@PathVariable("templateId") Long templateId, @AuthenticationPrincipal UserPrincipal loginUser){
-        if(loginUser == null){
-            throw new AuthenticationFailedException("로그인 후 사용해주세요.");
-        }
+    // QR로 접속하는 메소드
+    @GetMapping(value = "/view/{templateId}", produces = "application/json; charset=utf8")
+//    public ResponseEntity viewTemplate(@PathVariable("templateId") String templateId, @AuthenticationPrincipal UserPrincipal loginUser){
+    public ResponseEntity viewTemplate(@PathVariable("templateId") String templateId){
+//        if(loginUser == null){
+//            throw new AuthenticationFailedException("로그인 후 사용해주세요.");
+//        }
         String jsonData = templateService.viewTemplate(templateId);
+
         return ResponseEntity.status(HttpStatus.OK).body(jsonData);
     }
 }
