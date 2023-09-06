@@ -16,7 +16,6 @@
 <br/>
 ### Verifier Flow Chart
 ![](https://user-images.githubusercontent.com/83829352/265958095-5154bdc4-761a-42f2-9cb3-987d3aeddeb7.png)
-
 <br/>
 
 ## DB Schema
