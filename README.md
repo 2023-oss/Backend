@@ -20,7 +20,6 @@
 
 ### 실행 방법
 ```
-$ sudo apt-get install open-jdk-11
 $ cd $REPOSITORY/$PROJECT_NAME/
 $ ./gradlew build
 $ cp $REPOSITORY/$PROJECT_NAME/build/libs/*.jar $REPOSITORY/
@@ -41,11 +40,14 @@ $ java -jar $REPOSITORY/$JAR_NAME
 - `디지털 서명` 확인에 성공하면 동의서를 제출할 수 있다.<br/>
 
 ### Verifier Flow Chart
-
-<img src="https://user-images.githubusercontent.com/83829352/265958095-5154bdc4-761a-42f2-9cb3-987d3aeddeb7.png" width=500px/>
+<center>
+	<img src="https://user-images.githubusercontent.com/83829352/265958095-5154bdc4-761a-42f2-9cb3-987d3aeddeb7.png" width=500px/>
+</center>
 
 ## DB Schema
-![](https://user-images.githubusercontent.com/83829352/265958498-b3027dfa-ddc9-4542-ad1e-10fe4c0b2e52.png)
+<center>
+	<img src="https://user-images.githubusercontent.com/83829352/265958498-b3027dfa-ddc9-4542-ad1e-10fe4c0b2e52.png"/>
+</center>
 
 ## API 명세서
 아래의 링크를 통해 확인해주세요.
