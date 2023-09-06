@@ -1,5 +1,7 @@
 # Verifier
-실제 customSign 서비스를 이용하는 기업들을 위한 서버입니다.<br/><br/>
+실제 customSign 서비스를 이용하는 기업들을 위한 서버입니다.
+<br/>
+<br/>
 ## 인증 과정
 
 ### step1 - Holder가 VP(Verifiable Presentation)과 동의서를 제출
@@ -14,7 +16,9 @@
 <br/>
 ### Verifier Flow Chart
 ![](https://user-images.githubusercontent.com/83829352/265958095-5154bdc4-761a-42f2-9cb3-987d3aeddeb7.png)
+
 <br/>
+
 ## DB Schema
 ![](https://user-images.githubusercontent.com/83829352/265958498-b3027dfa-ddc9-4542-ad1e-10fe4c0b2e52.png)
 <br/>
@@ -22,6 +26,7 @@
 아래의 링크를 통해 확인해주세요.
 <br/>
 https://documenter.getpostman.com/view/26390728/2s9XxsVbmR
+
 
 
 <br/>
