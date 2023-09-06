@@ -1,6 +1,6 @@
 # Verifier
 실제 customSign 서비스를 이용하는 기업들을 위한 서버입니다.<br/><br/>
-## Verifier 인증 과정
+## 인증 과정
 
 ### step1 - Holder가 VP(Verifiable Presentation)과 동의서를 제출
 
