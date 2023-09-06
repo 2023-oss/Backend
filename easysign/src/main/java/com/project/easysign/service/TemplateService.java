@@ -2,6 +2,7 @@ package com.project.easysign.service;
 
 import com.project.easysign.domain.Template;
 import com.project.easysign.domain.User;
+import com.project.easysign.dto.TemplateDTO;
 import com.project.easysign.exception.JsonException;
 import com.project.easysign.exception.NonExistentException;
 import com.project.easysign.exception.NonExistentUserException;
@@ -42,8 +43,8 @@ public class TemplateService {
         return "SUCCESS";
     }
 
-    public String viewTemplate(String templateId) {
-        Template template = templateRepository.findByTemplateId(templateId)
+    public TemplateDTO viewTemplate(String templateId) {
+        Template template = templateRepository.findWithUserByTemplateId(templateId)
                 .orElseThrow(() -> new NonExistentException("존재하지 않는 동의서 양식 입니다."));
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = null;
@@ -63,7 +64,13 @@ public class TemplateService {
 
         jsonObject.put("defaultBlock", jsonArray);
         log.info("defaults=>{}", jsonObject.get("defaultBlock"));
+        String jsonData = jsonObject.toJSONString();
+        log.info(jsonData);
 
-        return jsonObject.toJSONString();
+        return TemplateDTO.builder()
+                .templateId(template.templateId)
+                .company(template.user.getCompany())
+                .picture(template.user.getPicture())
+                .jsonData(jsonData).build();
     }
 }
