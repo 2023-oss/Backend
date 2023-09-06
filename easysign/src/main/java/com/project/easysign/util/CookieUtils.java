@@ -27,7 +27,7 @@ public class CookieUtils {
 //        cookie.setSecure(secure);
 //        cookie.setMaxAge(maxAge);
 //        response.addCookie(cookie);
-        response.setHeader("Set-Cookie", String.format("%s=%s; Max-Age=%d; Domain=localhost; Path=/;", name, value, maxAge));
+        response.setHeader("Set-Cookie", String.format("%s=%s; Max-Age=%d; Domain=customsign.shop; Path=/;", name, value, maxAge));
         // response.setHeader("Set-Cookie", String.format("%s=%s; Max-Age=%d; Domain=domarketdodo.shop; Path=/;", name, value, maxAge));
     }
 
