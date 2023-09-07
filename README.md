@@ -52,6 +52,6 @@ $ java -jar $REPOSITORY/$JAR_NAME
 ## API 명세서
 아래의 링크를 통해 확인해주세요.
 <br/>
-[API](https://documenter.getpostman.com/view/26390728/2s9XxsVbmR)
+[Verifier API](https://documenter.getpostman.com/view/26390728/2s9XxsVbmR)
 
 
