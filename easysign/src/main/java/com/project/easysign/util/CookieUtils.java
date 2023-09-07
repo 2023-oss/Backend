@@ -40,6 +40,7 @@ public class CookieUtils {
                     cookie.setPath("/");
                     cookie.setMaxAge(0);
                     response.addCookie(cookie);
+                    response.setHeader("Set-Cookie", String.format("%s=%s; Max-Age=%d; Domain=customsign.shop; Path=/;", name, "", 0));
                 }
             }
         }
