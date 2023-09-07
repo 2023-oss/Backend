@@ -19,7 +19,7 @@
 ## Service
 1. 기업은 CustomSign에서 동의서 양식을 저장합니다.
 2. 저장한 동의서 양식을 QR코드로 사용자에게 전송할 수 있습니다.
-3.  사용자가 동의서를 작성한 후 제출하면 사용자가 직접 작성한 동의서인지 인증하는 과정을 거친 후 저장됩니다.
+3. 사용자가 동의서를 작성한 후 제출하면 사용자가 직접 작성한 동의서인지 인증하는 과정을 거친 후 저장됩니다.
 4. 저장된 동의서는 페이징 처리되어 목록 형태로 조회 가능하고, 
 	특정 사용자의 동의서를 조회하고 싶은 경우에는 동의서 고유 ID를 통해 조회할 수 있기 때문에 사용자의 개인정보가 노출되지 않습니다. 
 
@@ -46,13 +46,14 @@ $ java -jar $REPOSITORY/$JAR_NAME
 
 ### step1 - Holder가 VP(Verifiable Presentation)과 동의서를 제출
 
-- `Verifier`는 Holder로 부터 VP(Verifiable Presentation)와 동의서를 전달 받는다.
-- `VP`는 Holder의 VC(Verifiable Credentail)를 자신의 privateKey로 암호화한 jws와 VC, 그리고 블록체인으로 부터 privateKey와 쌍을 이루는 publicKey를 요청할 수 있는 did를 포함한다.
+- `Verifier`는 Holder로 부터 VP(Verifiable Presentation)와 동의서를 전달
+- `VP`는 Holder의 VC(Verifiable Credentail)를 자신의 privateKey로 암호화한 jws와 VC, 그리고 블록체인으로 부터 privateKey와 쌍을 이루는 publicKey를 요청할 수 있는 did를 포함
 - 
 ### step2 - Holder 디지털 서명 확인
 - `Holder`의 VP로부터 did를 추출한 후 블록체인 서버에 해당 did에 맞는 publicKey를 요청
-- `Holder`의 privateKey로 암호화된 jws를 publicKey로 복호화한 후 VC와 동일한지 확인함으로써 Holder가 동의서를 직접 작성하였음을 증명한다.
-- `디지털 서명` 확인에 성공하면 동의서를 제출할 수 있다.<br/>
+- `Holder`의 privateKey로 암호화된 jws를 publicKey로 복호화한 후 VC와 동일한지 확인함으로써 Holder가 동의서를 직접 작성하였음을 증명
+- `디지털 서명` 확인에 성공하면 동의서를 제출 가능
+<br/>
 
 ### Verifier Flow Chart
 <center>
