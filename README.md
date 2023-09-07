@@ -1,4 +1,14 @@
-# :mag: Verifier
+<h1 align="center"> :mag: Verifier </h1>
+<p align="center">
+<img src="https://img.shields.io/github/contributors/2023-oss/OSS-BACKEND
+">
+<img src="https://img.shields.io/github/languages/count/2023-oss/BACKEND
+">
+<img alt="GitHub license" src="https://img.shields.io/github/issues/2023-oss/OSS-BACKEND">
+<img alt="GitHub license" src="https://img.shields.io/github/issues-closed/2023-oss/OSS-BACKEND">
+<img src="https://img.shields.io/github/license/2023-oss/OSS-BACKEND">
+</p>
+<br/>
  CustomSign 서비스를 이용하는 기업들을 위한 웹서버입니다.
 <br/>
 ## Service
